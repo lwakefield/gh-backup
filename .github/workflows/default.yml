@@ -4,13 +4,16 @@ on: [push]
 
 jobs:
   backup:
-    name: Greeting
+    name: Backup
     runs-on: ubuntu-latest
     steps:
       - name: Setup
         run: |
           curl -sSL https://dist.crystal-lang.org/apt/setup.sh | sudo bash
+          sudo apt install crystal
           curl https://rclone.org/install.sh | sudo bash
+          crystal --version
+          rclone --version
       - uses: actions/checkout@v2
       - name: Backup
         env: # Or as an environment variable
