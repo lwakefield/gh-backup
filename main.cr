@@ -43,8 +43,11 @@ until next_page_url.nil?
     body.as_a.each do |repo|
         dir = Dir.tempdir + "/" + UUID.random.to_s
 
-        Log.info { "Cloning \"#{repo["ssh_url"]}\" to \"#{dir}\"" }
-        `git clone "#{repo["ssh_url"]}" #{dir}`
+        Log.info { "Cloning \"#{repo["clone_url"]}\" to \"#{dir}\"" }
+        uri = URI.parse repo["clone_url"].to_s
+        uri.user = ENV["GH_USERNAME"]
+        uri.password = ENV["GH_TOKEN"]
+        `git clone "#{uri.to_s}" #{dir}`
 
         Log.info { "Archiving \"#{dir}\"" }
         archive = "#{dir}/#{Time.local.to_rfc3339}.tar.gz"
