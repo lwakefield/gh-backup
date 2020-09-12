@@ -50,11 +50,12 @@ until next_page_url.nil?
         `git clone "#{uri.to_s}" #{dir}`
 
         Log.info { "Archiving \"#{dir}\"" }
-        archive = "#{dir}/#{Time.local.to_rfc3339}.tar.gz"
+        owner, repo_name = repo["full_name"].as_s.split "/"
+        archive = "#{dir}/#{repo_name}.tar.gz"
         `tar -czf #{archive} -C #{dir} .`
 
         Log.info { "Uploading archive" }
-        `rclone copy #{archive} ghbackup:/#{ENV["S3_BUCKET"]}/ghbackups/#{repo["full_name"]}`
+        `rclone copy #{archive} ghbackup:/#{ENV["S3_BUCKET"]}/ghbackups/#{owner}`
 
         Log.info { "Cleaning up" }
         `rm -rf #{dir}`
