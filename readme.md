@@ -1,4 +1,4 @@
-# gh-backup
+# gh-backup.
 
 All we have here, is a simple script which enumerates your github projects, and syncs them to an S3 Bucket.
 
